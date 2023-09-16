@@ -1,0 +1,24 @@
+@use '../../../scss/global/colors' as colors;
+@use '../../../scss/utils/functions' as fn;
+@import '../../../scss/utils/breakpoints';
+@import '../../../scss/utils/mixins';
+
+.Loading {
+  height: 100vh;
+  width: 100%;
+  background-color: #e9f3f5;
+  color: #be123c;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .Loading__img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .loading__text {
+    font-size: 2rem;
+    font-weight: 700;
+  }
+}

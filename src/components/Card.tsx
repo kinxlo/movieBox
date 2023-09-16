@@ -1,6 +1,17 @@
 import React, { useEffect } from 'react';
-import { Box, Flex, Image, Img, Link, Stack, Text } from '@chakra-ui/react';
+import {
+  Box,
+  Center,
+  Flex,
+  Image,
+  Img,
+  Link,
+  Stack,
+  Tag,
+  Text,
+} from '@chakra-ui/react';
 import { Link as ReactLink } from 'react-router-dom';
+import { Icon } from '@iconify/react';
 
 interface CardProps {
   movie: object | any;
@@ -30,9 +41,10 @@ const Card: React.FC<CardProps> = ({ movie, category }: CardProps) => {
         w={{ base: `100%`, lg: `250px` }}
         h={`513px`}
         cursor={'pointer'}
-        // _hover={{ boxShadow: '5px 5px 5px #01010150', transform: 'scale(1.01)' }}
+        _hover={{ boxShadow: '5px 5px 5px #01010150', transform: 'scale(1.01)' }}
       >
         <Box
+          pos={`relative`}
           border="1px solid #F3F2FB"
           // border={`1px solid red`}
           display="flex"
@@ -42,6 +54,28 @@ const Card: React.FC<CardProps> = ({ movie, category }: CardProps) => {
           width={`100%`}
           height={`370px`}
         >
+          <Flex
+            my={3}
+            px={3}
+            justifyContent={`space-between`}
+            pos={`absolute`}
+            top={0}
+            left={0}
+            w={`100%`}
+          >
+            <Tag borderRadius={`50px`} variant={`outline`} color={`grey.300`}>
+              MOVIE
+            </Tag>
+            <Center
+              _hover={{ color: `#BE123C`, bgColor: `#BE123C50` }}
+              borderRadius={`100%`}
+              color={`grey.300`}
+              p={2}
+              backgroundColor={`rgba(243, 244, 246, 0.50)`}
+            >
+              <Icon icon={`icon-park-outline:like`} />
+            </Center>
+          </Flex>
           <Image
             data-testid="movie-poster"
             src={`https://image.tmdb.org/t/p/original/${movie.poster_path}`}

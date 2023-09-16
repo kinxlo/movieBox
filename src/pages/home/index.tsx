@@ -5,6 +5,7 @@ import { Hero } from '../../components/Hero';
 import Carousel from '../../components/Carousel';
 import FeaturedMovie from '../../components/FeaturedMovie';
 import axios from 'axios';
+import Loading from '../../components/Loading';
 
 const options = {
   headers: {
@@ -17,12 +18,15 @@ const options = {
 const Home = () => {
   const [moviePayload, setMoviePayload] = useState();
   const [categoryPayload, setCategoryPayload] = useState();
+  const [isLoading, setLoading] = useState(false);
   const getData = async () => {
+    setLoading(true);
     const [genreRes, movieRes] = await Promise.all([
       axios.get(`https://api.themoviedb.org/3/genre/movie/list`, options),
       axios.get(`https://api.themoviedb.org/3/movie/top_rated`, options),
     ]);
     if (genreRes.status === 200 && movieRes.status === 200) {
+      setLoading(false);
       console.log(genreRes.data.genres);
       console.log(movieRes.data.results);
       setMoviePayload(movieRes?.data?.results.slice(0, 10));
@@ -38,13 +42,22 @@ const Home = () => {
 
   return (
     <DefaultLayout>
-      <Carousel movies={moviePayload} />
+      {isLoading ? (
+        <Loading text={`Loading...`} />
+      ) : (
+        <Carousel movies={moviePayload} />
+      )}
+
       <Container p={{ base: 4, lg: 0 }} maxW={`1306px`} my={`10rem`}>
-        <FeaturedMovie
-          title="Featured Movies"
-          category={categoryPayload}
-          movies={moviePayload}
-        />
+        {isLoading ? (
+          <Loading text={`Loading...`} />
+        ) : (
+          <FeaturedMovie
+            title="Featured Movies"
+            category={categoryPayload}
+            movies={moviePayload}
+          />
+        )}
       </Container>
     </DefaultLayout>
   );

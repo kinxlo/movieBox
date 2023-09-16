@@ -19,6 +19,7 @@ import { SharedButton } from '../components/shared-button/Button';
 import { Icon } from '@iconify/react';
 import { Navbar } from './ui-navbar/Navbar';
 import axios from 'axios';
+import Loading from '../components/Loading';
 
 const options = {
   headers: {
@@ -29,16 +30,20 @@ const options = {
 };
 
 const DashboardLayout = () => {
+  const [isLoading, setLoading] = useState(false);
   const { id } = useParams();
   const [payload, setPayload] = useState<any>();
 
   const getData = useCallback(async () => {
+    setLoading(true);
     const res = await axios.get(
       `https://api.themoviedb.org/3/movie/${id}`,
       options
     );
-    console.log(res);
-    setPayload(res?.data);
+    if (res.status === 200) {
+      setLoading(false);
+      setPayload(res?.data);
+    }
   }, [id]);
 
   useEffect(() => {
@@ -123,244 +128,249 @@ const DashboardLayout = () => {
             </NavLink>
           </Box>
         </Flex>
-        <Flex flexDir={`column`} w={`100%`} padding={10}>
-          <Box
-            pos={`relative`}
-            borderRadius={`20px`}
-            backgroundColor={`coral.100`}
-            w={`100%`}
-            height={{ base: `10rem`, md: `450px` }}
-            backgroundImage={`https://image.tmdb.org/t/p/original/${payload?.backdrop_path}`}
-            bgPos={`center`}
-            bgSize={`cover`}
-            bgRepeat={`no-repeat`}
-            overflow={`hidden`}
-            _after={{
-              pos: `absolute`,
-              content: '""',
-              top: 0,
-              left: 0,
-              width: `100%`,
-              height: `100%`,
-              bg: `#00000050`,
-            }}
-          >
-            <Center
+        {isLoading ? (
+          <Loading text={`Loading...`} />
+        ) : (
+          <Flex flexDir={`column`} w={`100%`} padding={10}>
+            <Box
               pos={`relative`}
-              zIndex={1}
-              height={`100%`}
-              gap={5}
-              flexDir={`column`}
+              borderRadius={`20px`}
+              backgroundColor={`coral.100`}
+              w={`100%`}
+              height={{ base: `10rem`, md: `450px` }}
+              backgroundImage={`https://image.tmdb.org/t/p/original/${payload?.backdrop_path}`}
+              bgPos={`center`}
+              bgSize={`cover`}
+              bgRepeat={`no-repeat`}
+              overflow={`hidden`}
+              _after={{
+                pos: `absolute`,
+                content: '""',
+                top: 0,
+                left: 0,
+                width: `100%`,
+                height: `100%`,
+                bg: `#00000050`,
+              }}
             >
               <Center
-                borderRadius={`100%`}
-                w={`100px`}
-                h={`100px`}
-                bgColor={`#E8E8E833`}
-                fontSize={`xxx-large`}
-                color={`white`}
-              >
-                <Icon icon={'fluent:play-32-filled'} />
-              </Center>
-              <Text color={`white`} as={`h5`}>
-                Watch Trailer
-              </Text>
-            </Center>
-          </Box>
-          {/* details */}
-          <Flex
-            my={10}
-            flexDir={{ base: `column`, md: `row` }}
-            justifyContent={`space-between`}
-          >
-            <Flex
-              flexDir={{ base: `column`, md: `row` }}
-              gap={5}
-              alignItems={{ base: `flex-start`, md: `center` }}
-            >
-              <Flex alignItems={`center`} gap={5}>
-                <Text as={`h5`} data-testid="movie-title">
-                  {payload?.title}
-                </Text>
-                <Text as={`h5`} data-testid="movie-release-date">
-                  {payload?.release_date.slice(0, 4)}
-                </Text>
-                <Text as={`h5`} data-testid="movie-runtime">
-                  {payload?.runtime}mins
-                </Text>
-              </Flex>
-              <Flex gap={5}>
-                <Tag
-                  variant={`unstyled`}
-                  border={`1px solid #BE123C50`}
-                  color={`#BE123C`}
-                  size={{ base: `sm`, md: `lg` }}
-                  borderRadius="full"
-                >
-                  {payload?.genres[0]?.name}
-                </Tag>
-                <Tag
-                  variant={`unstyled`}
-                  border={`1px solid #BE123C50`}
-                  color={`#BE123C`}
-                  size={{ base: `sm`, md: `lg` }}
-                  borderRadius="full"
-                >
-                  {payload?.genres[1]?.name}
-                </Tag>
-              </Flex>
-            </Flex>
-            <Flex gap={3} alignItems={`center`}>
-              <Flex
-                gap={1}
-                color={`yellow.200`}
-                fontSize={`xx-large`}
-                alignItems={`center`}
-              >
-                <Icon icon={`ph:star-fill`} />
-                <Text as={`h5`} color={`grey.400`}>
-                  8.5
-                </Text>
-              </Flex>
-              |{' '}
-              <Text as={`h5`} color={`black`}>
-                350k
-              </Text>
-            </Flex>
-          </Flex>
-          {/* grid */}
-          <Grid
-            templateColumns={{ base: 'repeat(1, 1fr)', md: 'repeat(12, 1fr)' }}
-            gap={6}
-          >
-            <GridItem colSpan={{ base: 12, md: 8 }} w="100%">
-              <Text data-testid="movie-overview" fontWeight={500}>
-                {payload?.overview}
-              </Text>
-              <Stack w={`100%`} gap={5} my={5}>
-                <Flex alignItems={`center`}>
-                  <Text className={`medium_text`} fontWeight={500}>
-                    Director:
-                  </Text>
-                  <Text
-                    className={`medium_text`}
-                    fontWeight={500}
-                    color={`#BE123C`}
-                  >
-                    Joseph Kosinski
-                  </Text>
-                </Flex>
-                <Flex alignItems={`center`}>
-                  <Text className={`medium_text`} fontWeight={500}>
-                    Writers:
-                  </Text>
-                  <Text
-                    className={`medium_text`}
-                    fontWeight={500}
-                    color={`#BE123C`}
-                  >
-                    Joseph Kosinski
-                  </Text>
-                </Flex>
-                <Flex alignItems={`center`}>
-                  <Text className={`medium_text`} fontWeight={500}>
-                    Stars:
-                  </Text>
-                  <Text
-                    className={`medium_text`}
-                    fontWeight={500}
-                    color={`#BE123C`}
-                  >
-                    Joseph Kosinski
-                  </Text>
-                </Flex>
-              </Stack>
-              <Flex flexDir={{ base: `column`, md: `row` }}>
-                <Tag
-                  pos={`relative`}
-                  zIndex={1}
-                  mr={-1}
-                  color={`white`}
-                  bgColor={`#BE123C`}
-                  width={{ base: `100%`, md: `15rem` }}
-                  size={`lg`}
-                >
-                  Top rated movie #65
-                </Tag>
-                <Select placeholder="Awards 9 nominations" size="lg" />
-              </Flex>
-            </GridItem>
-            <GridItem colSpan={{ base: 12, md: 4 }} w="100%">
-              <Stack w={`100%`}>
-                <SharedButton
-                  leftIcon={`la:tags`}
-                  text={'See Showtimes'}
-                  width={'100%'}
-                  height={'55px'}
-                  bgColor={'#BE123C'}
-                  textColor={'white'}
-                  borderRadius={'10px'}
-                  fontSize={{ base: `sm`, md: `md` }}
-                />
-                <SharedButton
-                  leftIcon={`uiw:menu`}
-                  text={'More watch options'}
-                  width={'100%'}
-                  height={'55px'}
-                  bgColor={'#BE123C1A'}
-                  textColor={'black'}
-                  borderRadius={'10px'}
-                  border="1px solid #BE123C"
-                  fontSize={{ base: `sm`, md: `md` }}
-                />
-              </Stack>
-              <Flex
                 pos={`relative`}
-                borderRadius={`10px`}
-                overflow={`hidden`}
-                height={`230px`}
-                my={5}
-                gap={1}
+                zIndex={1}
+                height={`100%`}
+                gap={5}
+                flexDir={`column`}
               >
-                <Box flex={1}>
-                  <Image
-                    h={`100%`}
-                    objectFit={`cover`}
-                    src={`https://res.cloudinary.com/kingsleysolomon/image/upload/v1694439131/hng/Poster_m5jf1w.png`}
-                    alt={`img`}
-                  />
-                </Box>
-                <Box flex={1}>
-                  <Image
-                    h={`100%`}
-                    src={`https://res.cloudinary.com/kingsleysolomon/image/upload/v1693877378/productize/shot6_e49via.png`}
-                    alt={`img`}
-                  />
-                </Box>
-                <Box flex={1}>
-                  <Image
-                    h={`100%`}
-                    objectFit={`cover`}
-                    src={`https://res.cloudinary.com/kingsleysolomon/image/upload/v1693877339/productize/IMG_20200303_205731_lpjimj.jpg`}
-                    alt={`img`}
-                  />
-                </Box>
-                <Box w={`100%`} pos={`absolute`} bottom={0}>
-                  <SharedButton
-                    leftIcon={`uiw:menu`}
-                    text={'The Best Movies and Shows in September'}
-                    width={'100%'}
-                    height={'42px'}
-                    bgColor={'rgba(18, 18, 18, 0.50)'}
-                    textColor={'white'}
-                    borderRadius={'10px'}
-                    fontSize={{ base: `sm` }}
-                  />
-                </Box>
+                <Center
+                  cursor={`pointer`}
+                  borderRadius={`100%`}
+                  w={`100px`}
+                  h={`100px`}
+                  bgColor={`#E8E8E833`}
+                  fontSize={`xxx-large`}
+                  color={`white`}
+                >
+                  <Icon icon={'fluent:play-32-filled'} />
+                </Center>
+                <Text cursor={`pointer`} color={`white`} as={`h5`}>
+                  Watch Trailer
+                </Text>
+              </Center>
+            </Box>
+            {/* details */}
+            <Flex
+              my={10}
+              flexDir={{ base: `column`, md: `row` }}
+              justifyContent={`space-between`}
+            >
+              <Flex
+                flexDir={{ base: `column`, md: `row` }}
+                gap={5}
+                alignItems={{ base: `flex-start`, md: `center` }}
+              >
+                <Flex alignItems={`center`} gap={5}>
+                  <Text as={`h5`} data-testid="movie-title">
+                    {payload?.title}
+                  </Text>
+                  <Text as={`h5`} data-testid="movie-release-date">
+                    {payload?.release_date.slice(0, 4)}
+                  </Text>
+                  <Text as={`h5`} data-testid="movie-runtime">
+                    {payload?.runtime}mins
+                  </Text>
+                </Flex>
+                <Flex gap={5}>
+                  <Tag
+                    variant={`unstyled`}
+                    border={`1px solid #BE123C50`}
+                    color={`#BE123C`}
+                    size={{ base: `sm`, md: `lg` }}
+                    borderRadius="full"
+                  >
+                    {payload?.genres[0]?.name}
+                  </Tag>
+                  <Tag
+                    variant={`unstyled`}
+                    border={`1px solid #BE123C50`}
+                    color={`#BE123C`}
+                    size={{ base: `sm`, md: `lg` }}
+                    borderRadius="full"
+                  >
+                    {payload?.genres[1]?.name}
+                  </Tag>
+                </Flex>
               </Flex>
-            </GridItem>
-          </Grid>
-        </Flex>
+              <Flex gap={3} alignItems={`center`}>
+                <Flex gap={1} fontSize={`xx-large`} alignItems={`center`}>
+                  <Box
+                    cursor={`pointer`}
+                    color={`grey.300`}
+                    _hover={{ color: `yellow.200` }}
+                  >
+                    <Icon icon={`ph:star-fill`} />
+                  </Box>
+                  <Text as={`h5`} color={`grey.400`}>
+                    8.5
+                  </Text>
+                </Flex>
+                |{' '}
+                <Text as={`h5`} color={`black`}>
+                  350k
+                </Text>
+              </Flex>
+            </Flex>
+            {/* grid */}
+            <Grid
+              templateColumns={{
+                base: 'repeat(1, 1fr)',
+                md: 'repeat(12, 1fr)',
+              }}
+              gap={6}
+            >
+              <GridItem colSpan={{ base: 12, md: 8 }} w="100%">
+                <Text data-testid="movie-overview" fontWeight={500}>
+                  {payload?.overview}
+                </Text>
+                <Stack w={`100%`} gap={5} my={5}>
+                  <Flex alignItems={`center`}>
+                    <Text as={`h6`} fontWeight={500}>
+                      Director:
+                    </Text>
+                    <Text as={`h6`} fontWeight={500} color={`#BE123C`}>
+                      Joseph Kosinski
+                    </Text>
+                  </Flex>
+                  <Flex alignItems={`center`}>
+                    <Text as={`h6`} fontWeight={500}>
+                      Writers:
+                    </Text>
+                    <Text as={`h6`} fontWeight={500} color={`#BE123C`}>
+                      Joseph Kosinski
+                    </Text>
+                  </Flex>
+                  <Flex alignItems={`center`}>
+                    <Text as={`h6`} fontWeight={500}>
+                      Stars:
+                    </Text>
+                    <Text as={`h6`} fontWeight={500} color={`#BE123C`}>
+                      Joseph Kosinski
+                    </Text>
+                  </Flex>
+                </Stack>
+                <Flex flexDir={{ base: `column`, md: `row` }}>
+                  <Tag
+                    pos={`relative`}
+                    zIndex={1}
+                    mr={-1}
+                    color={`white`}
+                    bgColor={`#BE123C`}
+                    width={{ base: `100%`, md: `15rem` }}
+                    size={`lg`}
+                  >
+                    Top rated movie #65
+                  </Tag>
+                  <Select
+                    disabled
+                    placeholder="Awards 9 nominations"
+                    size="lg"
+                  />
+                </Flex>
+              </GridItem>
+              <GridItem colSpan={{ base: 12, md: 4 }} w="100%">
+                <Stack w={`100%`}>
+                  <Link as={ReactLink} to={`/404`}>
+                    <SharedButton
+                      leftIcon={`la:tags`}
+                      text={'See Showtimes'}
+                      width={'100%'}
+                      height={'55px'}
+                      bgColor={'#BE123C'}
+                      textColor={'white'}
+                      borderRadius={'10px'}
+                      fontSize={{ base: `sm`, md: `md` }}
+                    />
+                  </Link>
+                  <Link as={ReactLink} to={`/404`}>
+                    <SharedButton
+                      leftIcon={`uiw:menu`}
+                      text={'More watch options'}
+                      width={'100%'}
+                      height={'55px'}
+                      bgColor={'#BE123C1A'}
+                      textColor={'black'}
+                      borderRadius={'10px'}
+                      border="1px solid #BE123C"
+                      fontSize={{ base: `sm`, md: `md` }}
+                    />
+                  </Link>
+                </Stack>
+                <Flex
+                  pos={`relative`}
+                  borderRadius={`10px`}
+                  overflow={`hidden`}
+                  height={`230px`}
+                  my={5}
+                  gap={1}
+                >
+                  <Box flex={1}>
+                    <Image
+                      h={`100%`}
+                      objectFit={`cover`}
+                      src={`https://res.cloudinary.com/kingsleysolomon/image/upload/v1694439131/hng/Poster_m5jf1w.png`}
+                      alt={`img`}
+                    />
+                  </Box>
+                  <Box flex={1}>
+                    <Image
+                      h={`100%`}
+                      src={`https://res.cloudinary.com/kingsleysolomon/image/upload/v1693877378/productize/shot6_e49via.png`}
+                      alt={`img`}
+                    />
+                  </Box>
+                  <Box flex={1}>
+                    <Image
+                      h={`100%`}
+                      objectFit={`cover`}
+                      src={`https://res.cloudinary.com/kingsleysolomon/image/upload/v1693877339/productize/IMG_20200303_205731_lpjimj.jpg`}
+                      alt={`img`}
+                    />
+                  </Box>
+                  <Box w={`100%`} pos={`absolute`} bottom={0}>
+                    <SharedButton
+                      leftIcon={`uiw:menu`}
+                      text={'The Best Movies and Shows in September'}
+                      width={'100%'}
+                      height={'42px'}
+                      bgColor={'rgba(18, 18, 18, 0.50)'}
+                      textColor={'white'}
+                      borderRadius={'10px'}
+                      fontSize={{ base: `sm` }}
+                    />
+                  </Box>
+                </Flex>
+              </GridItem>
+            </Grid>
+          </Flex>
+        )}
       </Flex>
     </>
   );
