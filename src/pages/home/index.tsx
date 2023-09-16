@@ -18,12 +18,6 @@ const Home = () => {
   const [moviePayload, setMoviePayload] = useState();
   const [categoryPayload, setCategoryPayload] = useState();
   const getData = async () => {
-    // const res = await axios.get(
-    //   `https://api.themoviedb.org/3/movie/top_rated`,
-    //   options
-    // );
-    // // console.log(res.data.results);
-    // setPayload(res?.data?.results.slice(0, 10));
     const [genreRes, movieRes] = await Promise.all([
       axios.get(`https://api.themoviedb.org/3/genre/movie/list`, options),
       axios.get(`https://api.themoviedb.org/3/movie/top_rated`, options),
