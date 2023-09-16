@@ -50,8 +50,6 @@ const DashboardLayout = () => {
     getData();
   }, [getData]);
 
-  console.log(payload);
-
   return (
     <>
       <Box display={{ base: `block`, md: `none` }}>
@@ -192,7 +190,8 @@ const DashboardLayout = () => {
                     {payload?.title}
                   </Text>
                   <Text as={`h5`} data-testid="movie-release-date">
-                    {payload?.release_date.slice(0, 4)}
+                    {/* {payload?.release_date.slice(0, 4)} */}
+                    {new Date(payload?.release_date).toISOString()}
                   </Text>
                   <Text as={`h5`} data-testid="movie-runtime">
                     {payload?.runtime}mins
