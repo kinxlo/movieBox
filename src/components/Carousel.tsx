@@ -60,11 +60,15 @@ const Carousel = ({ movies }: data) => {
               <Flex color={`white`} my={3} gap={`10rem`}>
                 <Flex gap={5} alignItems={`center`}>
                   <Img src="https://res.cloudinary.com/kingsleysolomon/image/upload/v1694646082/hng/productize/MV5BMTk3ODA4Mjc0NF5BMl5BcG5nXkFtZTgwNDc1MzQ2OTE_1_ykrs84.png" />
-                  <Text fontSize={`sm`}>86.0/100</Text>
+                  <Text fontSize={`sm`}>{`${
+                    movie?.vote_average * 10
+                  }/100`}</Text>
                 </Flex>
                 <Flex gap={5} alignItems={`center`}>
                   <Img src="https://res.cloudinary.com/kingsleysolomon/image/upload/v1694646083/hng/productize/PngItem_1381056_1_tmacjg.png" />
-                  <Text fontSize={`sm`}>97%</Text>
+                  <Text fontSize={`sm`}>
+                    {`${Math.floor((movie?.vote_average / 10) * 100)}%`}
+                  </Text>
                 </Flex>
               </Flex>
               <Text fontSize={`sm`}>{movie?.overview}</Text>

@@ -41,7 +41,9 @@ const Card: React.FC<CardProps> = ({ movie, category }: CardProps) => {
         w={{ base: `100%`, lg: `250px` }}
         h={`513px`}
         cursor={'pointer'}
-        _hover={{ boxShadow: '5px 5px 5px #01010150', transform: 'scale(1.01)' }}
+        _hover={{
+          transform: 'scale(1.01)',
+        }}
       >
         <Box
           pos={`relative`}
@@ -106,11 +108,14 @@ const Card: React.FC<CardProps> = ({ movie, category }: CardProps) => {
             <Flex mt={3} justifyContent={`space-between`}>
               <Flex gap={1} alignItems={`center`}>
                 <Img src="https://res.cloudinary.com/kingsleysolomon/image/upload/v1694646082/hng/productize/MV5BMTk3ODA4Mjc0NF5BMl5BcG5nXkFtZTgwNDc1MzQ2OTE_1_ykrs84.png" />
-                <Text fontSize={`xs`}>760/100</Text>
+                <Text fontSize={`sm`}>{`${movie?.vote_average * 10}/100`}</Text>
               </Flex>
               <Flex gap={1} alignItems={`center`}>
                 <Img src="https://res.cloudinary.com/kingsleysolomon/image/upload/v1694646083/hng/productize/PngItem_1381056_1_tmacjg.png" />
-                <Text fontSize={`xs`}>760/100</Text>
+                <Text fontSize={`xs`}>
+                  {' '}
+                  {`${Math.floor((movie?.vote_average / 10) * 100)}%`}
+                </Text>
               </Flex>
             </Flex>
             <Flex color={`#9CA3AF`} my={5}>

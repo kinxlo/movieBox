@@ -52,7 +52,7 @@ export const Sidenav = () => {
           <DrawerBody py={10}>
             <Links isMobile={true} />
           </DrawerBody>
-          <DrawerFooter>
+          {/* <DrawerFooter>
             <Stack w={`100%`} gap={4}>
               <Link>
                 <SharedButton
@@ -77,7 +77,7 @@ export const Sidenav = () => {
                 />
               </Link>
             </Stack>
-          </DrawerFooter>
+          </DrawerFooter> */}
         </DrawerContent>
       </Drawer>
     </>
