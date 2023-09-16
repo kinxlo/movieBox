@@ -5,11 +5,8 @@ import {
   Grid,
   GridItem,
   Image,
-  Img,
   Link,
-  ListItem,
   Select,
-  SimpleGrid,
   Stack,
   Tag,
   Text,
@@ -33,7 +30,7 @@ const options = {
 
 const DashboardLayout = () => {
   const { id } = useParams();
-  const [payload, setPayload] = useState();
+  const [payload, setPayload] = useState<any>();
 
   const getData = useCallback(async () => {
     const res = await axios.get(

@@ -3,22 +3,17 @@ import {
   Image,
   Center,
   Link,
-  Container,
   Box,
   FormControl,
-  FormLabel,
   Input,
-  FormHelperText,
   InputGroup,
   InputRightElement,
   Text,
 } from '@chakra-ui/react';
 import { Link as RouterLink } from 'react-router-dom';
 
-import Links from './NavigationLinks';
 import { Sidenav } from './SideNavigationbar';
 import { Icon } from '@iconify/react';
-import { SharedButton } from '../../components/shared-button/Button';
 
 export const Navbar = () => {
   return (

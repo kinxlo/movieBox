@@ -3,16 +3,16 @@ import { Box, Flex, Image, Img, Link, Stack, Text } from '@chakra-ui/react';
 import { Link as ReactLink } from 'react-router-dom';
 
 interface CardProps {
-  movie: object;
+  movie: object | any;
   category?: [];
 }
 
 const Card: React.FC<CardProps> = ({ movie, category }: CardProps) => {
-  const getCategory = category?.filter((cat) => {
+  const getCategory = category?.filter((cat: any) => {
     return cat?.id === movie?.genre_ids[0] || cat.id === movie?.genre_ids[1];
   });
 
-  const showCat = getCategory?.map((gen) => {
+  const showCat = getCategory?.map((gen: any) => {
     return (
       <Text key={gen?.id} mr={1} fontSize={`xs`}>
         {gen?.name},

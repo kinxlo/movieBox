@@ -1,19 +1,12 @@
 import {
   OrderedList,
   ListItem,
-  Menu,
-  MenuButton,
-  Button,
-  MenuList,
-  MenuItem,
-  Text,
   Flex,
   Image,
 } from '@chakra-ui/react';
 import { NavLink } from 'react-router-dom';
 import style from './navbar.module.scss';
 import { links } from './links';
-import { Icon } from '@iconify/react';
 
 type SubLink = {
   id: number;

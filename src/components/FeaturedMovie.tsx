@@ -8,16 +8,16 @@ import { Icon } from '@iconify/react';
 // import Container from '../shared-ui/Container';
 
 // Define the type for a product
-interface Product {
-  id: number;
-  image: string;
-  title: string;
-  rating: {
-    rate: number;
-    count: number;
-  };
-  price: number;
-}
+// interface Product {
+//   id: number;
+//   image: string;
+//   title: string;
+//   rating: {
+//     rate: number;
+//     count: number;
+//   };
+//   price: number;
+// }
 
 export interface slideProps {
   title: string;
@@ -30,8 +30,8 @@ const FeaturedMovie = ({ title, movies, category }: slideProps) => {
 
   // Render product cards
   const renderCards = () => {
-    return movies?.map((film) => (
-      <Card key={film.id} category={category} movie={film} />
+    return movies?.map((film: any) => (
+      <Card key={film?.id} category={category} movie={film} />
     ));
   };
 
